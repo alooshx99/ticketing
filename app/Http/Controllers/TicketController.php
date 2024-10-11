@@ -31,7 +31,7 @@ class TicketController extends Controller
     {
         $request->validate([
             'title' => 'required|string|min:3|max:255',
-            'content' => 'required|string',
+            'description' => 'required|string',
             'image_url' => 'nullable|string',
             'category' => ['required', new Enum(CategoryEnum::class)],
         ]);

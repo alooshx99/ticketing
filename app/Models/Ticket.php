@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Enums\TicketStatusEnum;
 use App\Enums\CategoryEnum;
-use App\Models\Response;
+use App\Models\Reply;
 
 class Ticket extends Model
 {
