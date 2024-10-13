@@ -2,13 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
 
 class RoleMiddleware
 {
@@ -19,12 +17,14 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        $user = Auth::user();
 
-        if ($user->role->role_name !== $role) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+        $user = User::find(Auth::id());
+        $user_role = $user->role->role_name;
+
+        if ($user_role == $role) {
+            return $next($request);
         }
+        return response()->json(['message' => 'Unauthorized.'], 403);
 
-        return $next($request);
     }
 }
