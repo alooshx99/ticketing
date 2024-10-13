@@ -20,10 +20,14 @@ class RegisterController extends Controller
 
         ]);
 
+        $user = User::assignRole('client')->load('roles');;
+
         if($request->full_name == 'admin'){
             $role_id = 1;}
         else
             $role_id = 2;
+
+
 
 
         $user = User::create([

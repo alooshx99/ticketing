@@ -21,6 +21,7 @@ class Ticket extends Model
         'status',
         'image_url',
         'closed_at',
+        'receiver_id'
     ];
 
     protected $casts = [

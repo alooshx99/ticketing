@@ -34,6 +34,7 @@ class TicketController extends Controller
             'description' => 'required|string',
             'image_url' => 'nullable|string',
             'category' => ['required', new Enum(CategoryEnum::class)],
+            'receiver_id' => 'required | integer|',
         ]);
 
         $user_id = Auth::id();
@@ -45,6 +46,7 @@ class TicketController extends Controller
             'status' => TicketStatusEnum::Open,
             'category' => $request->category,
             'user_id' => $user_id,
+            'receiver_id' => $request->receiver_id,
 
         ]);
         return Response::json($ticket)->setStatusCode(201);
@@ -56,6 +58,7 @@ class TicketController extends Controller
             'title' => 'required|string|min:3|max:255',
             'description' => 'required|string',
             'image_url' => 'nullable|string',
+            'category' => ['required', new Enum(CategoryEnum::class)],
 
         ]);
 
@@ -67,6 +70,7 @@ class TicketController extends Controller
             'image_url' => $request->image_url,
             'status' => TicketStatusEnum::Open,
             'user_id' => $user_id,
+            'category' => $request->category,
         ]);
         return Response::json($ticket)->setStatusCode(201);
     }
