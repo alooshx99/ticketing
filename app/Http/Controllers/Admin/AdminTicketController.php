@@ -21,7 +21,7 @@ class AdminTicketController extends Controller
             'description' => 'required|string',
             'image_url' => 'nullable|string',
             'category' => ['required', new Enum(CategoryEnum::class)],
-
+//test
         ]);
 
 
