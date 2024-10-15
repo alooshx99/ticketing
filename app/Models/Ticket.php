@@ -37,8 +37,7 @@ class Ticket extends Model
 
     }
 
-    public function replies()
-    {
+    public function replies(){
         return $this->hasMany(Reply::class);
     }
 

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
-            $table->integer('next_reply_id')->default(null);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->integer('next_reply_id')->nullable()->default(null);
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
