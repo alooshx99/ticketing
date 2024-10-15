@@ -20,7 +20,7 @@ class TicketController extends Controller
     public function index()
     {
         $tickets = Ticket::all();
-        return Response::json($tickets);
+        return response()->json($tickets)->setStatusCode(200);
 
     }
 
