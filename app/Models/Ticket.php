@@ -26,7 +26,7 @@ class Ticket extends Model
         'attached_files',
     ];
 
-    //protected $hidden = ['id'];
+    protected $hidden = ['user_id'];
 
     protected $casts = [
         'status' => TicketStatusEnum::class,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\helper;
 use App\Http\Controllers\Controller;
 use App\Models\Reply;
 use App\Models\Ticket;
@@ -22,7 +23,7 @@ class AdminReplyController extends Controller
         $ticket= Ticket::where('SID', $SID)->first(); //find the ticket with the SID
 
 
-        $previous_reply = Reply::where('ticket_id', $ticket->SID) //find the previous reply
+        $previous_reply = Reply::where('ticket_id', $ticket->id) //find the previous reply
             ->whereNull('next_reply_id')
             ->first();
 
@@ -31,12 +32,21 @@ class AdminReplyController extends Controller
             'description' => $request->description,
             'ticket_id' => $ticket->id,
             'user_id' => $user_id,
+            'SID' => app(helper::class)->generateReplySID(),
+            'sender' => app(helper::class)->checkRole($user_id),
         ]);
 
 
         if($previous_reply){ //if there is a previous reply, set the next reply id of previous reply to the current reply
             $previous_reply->next_reply_id = $reply->id;
             $previous_reply->save();
+        }
+
+        $filesPath = app(helper::class)->saveFile($request,null ,$reply);
+
+        if ($filesPath) {
+            $reply->attached_files = $filesPath;
+            $reply->save();
         }
 
         return Response::json($reply)->setStatusCode(201);

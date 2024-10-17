@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\helper;
 use App\Http\Controllers\Controller;
+use App\Models\Reply;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -21,12 +22,21 @@ class TicketController extends Controller
 
     public function index()
     {
-        $user_id = Auth::id();
-        $tickets = Ticket::where('user_id', $user_id)->orderBy('created_at', 'desc')->get()->makeHidden('id');
-        return Response::json($tickets)->setStatusCode(200);
 
-//        return response()->json(['data'=>$tickets])
-//            ->header('content_type','application/json');
+        $user = Auth::user();
+        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->get()->makeHidden('id');
+
+        $ticketsNumber = app(helper::class)->countTotalTickets();
+        $pendingTicketsNumber = app(helper::class)->countPendingTickets();
+        $closedTicketsNumber = app(helper::class)->countClosedTickets();
+
+
+        return Response::json([
+            ["user full name" => $user->full_name,
+            'Total Tickets'=> $ticketsNumber,
+            'Pending Tickets'=> $pendingTicketsNumber,
+            'Closed Tickets'=> $closedTicketsNumber],
+            $tickets])->setStatusCode(200);
 
     }
 

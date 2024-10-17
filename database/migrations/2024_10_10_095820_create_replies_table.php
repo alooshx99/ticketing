@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('SID')->unique();
             $table->integer('next_reply_id')->nullable()->default(null);
             $table->integer('user_id');
+            $table->string('sender')->nullable();
             $table->string('attached_files')->nullable();
             $table->timestamps();
         });

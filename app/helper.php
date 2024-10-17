@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -99,9 +100,65 @@ class helper
             $fileNumber++;
 
         }
-
         return $urls;
+    }
+
+    public function countTotalTickets()
+    {
+        return Ticket::count();
+
+    }
+    public function isTicketPending($replies)
+    {
+
+
+        foreach ($replies as $reply){
+            if($reply['sender']== 'admin'){
+                return false;
+            }
+        }
+        return true;
 
     }
 
+//foreach ($ticket['replies'] as $reply) {
+//if ($this->isTicketPending($ticket) && $ticket['status']->value != 'closed') {
+    public function countPendingTickets()
+    {
+        $tickets = Ticket::all()->load('replies');
+        $count =0;
+
+        foreach($tickets as $ticket){
+
+            if($this->isTicketPending($ticket['replies']) && $ticket['status']->value != 'closed'){
+                $count++;
+            }
+        }
+
+        return $count;
+
+    }
+
+    public function countClosedTickets()
+    {
+        $tickets = Ticket::all();
+        $count =0;
+        foreach($tickets as $ticket){
+            if($ticket['status']->value == 'closed'){
+                $count++;
+            }
+        }
+
+        return $count;
+
+    }
+
+    public function checkRole($user_id){
+
+        $user = User::where('id', $user_id)->first();
+        if($user){
+            return $user->role->role_name;
+        }
+        else "User not found";
+    }
 }

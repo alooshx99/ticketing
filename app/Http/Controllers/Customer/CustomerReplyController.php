@@ -23,8 +23,8 @@ class CustomerReplyController extends Controller
         $ticket= Ticket::where('SID', $SID)->first(); //find the ticket with the SID
 
 
-        $previous_reply = Reply::where('ticket_id', $ticket->SID) //find the previous reply
-        ->whereNull('next_reply_id')
+        $previous_reply = Reply::where('ticket_id', $ticket->id) //find the previous reply
+            ->whereNull('next_reply_id')
             ->first();
 
 
@@ -33,6 +33,7 @@ class CustomerReplyController extends Controller
             'ticket_id' => $ticket->id,
             'user_id' => $user_id,
             'SID' => app(helper::class)->generateReplySID(),
+            'sender' => app(helper::class)->checkRole($user_id),
         ]);
 
 
