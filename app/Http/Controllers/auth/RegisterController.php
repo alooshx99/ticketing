@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\auth;
 
+use App\helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
@@ -28,12 +30,12 @@ class RegisterController extends Controller
 
 
 
-
         $user = User::create([
             'full_name' => $request->full_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $role_id,
+            'SID' => app(helper::class)->generateUserSID(),
         ]);
 
 

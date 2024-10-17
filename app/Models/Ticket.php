@@ -21,8 +21,12 @@ class Ticket extends Model
         'status',
         'image_url',
         'closed_at',
-        'receiver_id'
+        'receiver_id',
+        'SID',
+        'attached_files',
     ];
+
+    //protected $hidden = ['id'];
 
     protected $casts = [
         'status' => TicketStatusEnum::class,

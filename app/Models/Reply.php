@@ -14,7 +14,15 @@ class Reply extends Model
         'ticket_id',
         'next_reply_id',
         'user_id',
+        'SID',
+        'attached_files',
     ];
+
+    protected $table = 'replies';
+
+    protected $hidden = [
+        'id',
+        'ticket_id',];
 
     public function ticket()
     {

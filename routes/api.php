@@ -23,21 +23,18 @@ Route::post('/login', [LoginController::class, 'login']);
 
 
 
-Route::post('/customer/tickets/create', [TicketController::class, 'store'])->middleware(['auth:sanctum']);
-Route::get('/customer/tickets', [TicketController::class, 'index']);
-Route::get('/customer/tickets/{ticket}', [TicketController::class, 'show']);
+Route::post('/customer/tickets/', [TicketController::class, 'store'])->middleware(['auth:sanctum']);
+Route::get('/customer/tickets', [TicketController::class, 'index'])->middleware(['auth:sanctum']);
+Route::get('/customer/tickets/{SID}', [TicketController::class, 'show'])->middleware(['auth:sanctum']);
+Route::get('/customer/tickets/{SID}/files', [TicketController::class, 'TicketFiles'])->middleware(['auth:sanctum']);
+Route::post('/customer/tickets/{SID}/reply', [CustomerReplyController::class, 'reply'])->middleware(['auth:sanctum']);
+Route::get('/customer/tickets/reply/{SID}/files', [CustomerReplyController::class, 'ReplyFiles'])->middleware(['auth:sanctum']);
 
 
-//Route::middleware(['auth:sanctum', 'role'])->group(function () {
-//    Route::patch('/tickets/{ticket}', [TicketController::class, 'update']);
-//});
-
-Route::patch('/admin/tickets/update/{ticket}', [AdminTicketController::class, 'update'])->middleware(['auth:sanctum', RoleMiddleware::class . ':admin']);
-//Route::patch('/tickets/{ticket}', [TicketController::class, 'update'])->middleware('role:admin');
-//Route::patch('/tickets/{ticket}', [TicketController::class, 'update'])->middleware(['auth:sanctum', \App\Http\Middleware\RolesMiddleware::class . 'admin']);
+Route::patch('/admin/tickets/{SID}', [AdminTicketController::class, 'update'])->middleware(['auth:sanctum', RoleMiddleware::class . ':admin']);
+Route::post('/admin/tickets/{SID}/reply', [AdminReplyController::class, 'reply'])->middleware(['auth:sanctum', RoleMiddleware::class . ':admin']);
+Route::get('/admin/tickets', [AdminTicketController::class, 'index'])->middleware(['auth:sanctum', RoleMiddleware::class . ':admin']);
+Route::get('/admin/tickets/{SID}', [AdminTicketController::class, 'show'])->middleware(['auth:sanctum', RoleMiddleware::class . ':admin']);
 
 
-Route::post('/admin/tickets/{ticket}/reply', [AdminReplyController::class, 'reply'])->middleware(['auth:sanctum', RoleMiddleware::class . ':admin']);
-Route::get('/admin/tickets/{ticket}/reply/{reply}', [AdminReplyController::class, 'show'])->middleware(['auth:sanctum', RoleMiddleware::class . ':admin']);
 
-Route::post('/customer/tickets/{ticket}/reply', [CustomerReplyController::class, 'reply'])->middleware(['auth:sanctum']);
