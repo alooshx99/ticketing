@@ -103,8 +103,11 @@ class helper
         return $urls;
     }
 
-    public function countTotalTickets()
+    public function countTotalTickets($user_id=null)
     {
+        if($user_id){
+            return Ticket::where('user_id', $user_id)->count();
+        }
         return Ticket::count();
 
     }
@@ -123,9 +126,15 @@ class helper
 
 //foreach ($ticket['replies'] as $reply) {
 //if ($this->isTicketPending($ticket) && $ticket['status']->value != 'closed') {
-    public function countPendingTickets()
+    public function countPendingTickets($user_id=null)
     {
-        $tickets = Ticket::all()->load('replies');
+        if($user_id){
+            $tickets = Ticket::where('user_id', $user_id)->get()->load('replies');
+        }
+        else{
+            $tickets = Ticket::all()->load('replies');
+        }
+
         $count =0;
 
         foreach($tickets as $ticket){
@@ -139,9 +148,15 @@ class helper
 
     }
 
-    public function countClosedTickets()
+    public function countClosedTickets($user_id=null)
     {
-        $tickets = Ticket::all();
+        if($user_id){
+            $tickets = Ticket::where('user_id', $user_id)->get();
+        }
+        else{
+            $tickets = Ticket::all();
+        }
+
         $count =0;
         foreach($tickets as $ticket){
             if($ticket['status']->value == 'closed'){
@@ -160,5 +175,22 @@ class helper
             return $user->role->role_name;
         }
         else "User not found";
+    }
+
+    public function getIDFromSID($type = null, $SID){
+
+        if($type){
+            $x = '$thing = '. $type .'::where("SID", $SID)->first();
+            $thing_id = $thing->id;
+            return $thing_id;';
+
+            eval($x);
+
+        }
+
+        else return "Class Not Found";
+
+
+
     }
 }

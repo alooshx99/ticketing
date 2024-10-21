@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\CategoryEnum;
 use App\Enums\TicketStatusEnum;
+use App\helper;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -17,11 +18,18 @@ class AdminTicketController extends Controller
 {
     public function index()
     {
-        $tickets = Ticket::orderBy('created_at', 'desc')->get();
-        return Response::json($tickets)->setStatusCode(200);
+        $user = Auth::user();
 
-//        return response()->json(['data'=>$tickets])
-//            ->header('content_type','application/json');
+        $tickets = Ticket::orderBy('created_at', 'desc')->get();
+
+        return Response::json([
+            ["user full name" => $user->full_name,
+                'Total Tickets'=> app(helper::class)->countTotalTickets(),
+                'Pending Tickets'=> app(helper::class)->countPendingTickets(),
+                'Closed Tickets'=> app(helper::class)->countClosedTickets(),
+            ],
+            $tickets])->setStatusCode(200);
+
 
     }
 

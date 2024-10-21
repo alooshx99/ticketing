@@ -26,17 +26,15 @@ class TicketController extends Controller
         $user = Auth::user();
         $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->get()->makeHidden('id');
 
-        $ticketsNumber = app(helper::class)->countTotalTickets();
-        $pendingTicketsNumber = app(helper::class)->countPendingTickets();
-        $closedTicketsNumber = app(helper::class)->countClosedTickets();
-
-
+        //$tickets = Ticket::all();
         return Response::json([
-            ["user full name" => $user->full_name,
-            'Total Tickets'=> $ticketsNumber,
-            'Pending Tickets'=> $pendingTicketsNumber,
-            'Closed Tickets'=> $closedTicketsNumber],
-            $tickets])->setStatusCode(200);
+            ["data" =>
+                ["user full name" => $user->full_name,
+                 'Total Tickets'=> app(helper::class)->countTotalTickets($user->id),
+                'Pending Tickets'=> app(helper::class)->countPendingTickets($user->id),
+                'Closed Tickets'=> app(helper::class)->countClosedTickets($user->id),
+                    ],
+            'tickets' => $tickets]])->setStatusCode(200);
 
     }
 
