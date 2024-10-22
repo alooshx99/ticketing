@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\AdminTicketController;
 
 //Route::get('/', function () {
 //    return view('dashboard');
-//});
+//});//
 
 Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'DashboardData']);
 Route::get('/usersList',function (){return view('users');});
